@@ -1,27 +1,52 @@
-// src/types/database.ts
-
-export interface GCS {
-  eyeOpening: number;
-  verbalResponse: number;
-  motorResponse: number;
-  total: number;
+import firebase from 'firebase/compat/app'; 
+// Core data models
+export interface Patient {
+  id: string;
+  primaryDiagnosis: string;
+  pastMedicalHistory: string[];
+  activeProblems: string[];
+}
+export interface Medication {
+  id: string;
+  name: string;
+  dose: string;
+  frequency: string;
+  route: string;
 }
 
-export interface CnsData {
-  gcs?: Partial<GCS>;
-  pupils?: { [key: string]: string };
-  motorFunction?: { [key: string]: string };
-  systemicParameters?: { [key: string]: string | number };
-  icp?: { [key: string]: string };
-  cpp?: number;
-  cerebralOxygenation?: { [key: string]: string };
-  eeg?: { [key: string]: string };
-  csf?: { [key: string]: string | boolean };
-  delirium?: { [key: string]: string };
-  brainDeath?: { [key: string]: string };
+export interface Task {
+  id: string;
+  text: string;
+  isDone: boolean;
+  createdAt: firebase.firestore.Timestamp | Date;
+  notes?: string;
 }
 
-export interface Alert {
-  type: 'Critical' | 'Warning';
-  message: string;
+export interface FollowUp {
+  id: string;
+  createdAt: any; 
+  notes?: string;
+  aiSummary?: string;
+  // System-specific notes
+  cns?: string;
+  cv?: string;
+  respiratory?: string;
+  fluidKidney?: string;
+  giLiver?: string;
+  hematology?: string;
+  infectious?: string;
+  skin?: string;
+  catheters?: string;
+  procedures?: string;
+  
+  // Snapshot of patient state at the time of follow-up
+  snapshot?: {
+    tasks: Task[];
+    medications: Medication[];
+    patientOverview: {
+      primaryDiagnosis: string;
+      pastMedicalHistory: string[];
+      activeProblems: string[];
+    }
+  }
 }

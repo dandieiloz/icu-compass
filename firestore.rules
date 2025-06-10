@@ -1,0 +1,12 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // This is a secure default rule. It allows any authenticated user
+    // to read and write to the database. In a real production app,
+    // you would make these rules even more specific.
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}

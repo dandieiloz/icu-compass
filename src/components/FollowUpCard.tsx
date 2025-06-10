@@ -1,54 +1,40 @@
-// src/components/FollowUpCard.tsx
-
 import { type FollowUp } from '../types/database';
 
 interface FollowUpCardProps {
   followUp: FollowUp;
-  onGenerateSummary: () => void;
-  isAiLoading: boolean;
+  // Add an onClick prop to make the card interactive
+  onClick: () => void;
 }
 
-// Explicitly define which system keys are meant to be displayed as objects.
-const DISPLAYABLE_SYSTEMS: (keyof FollowUp)[] = [
-    'id', 'hematology'
+// Define which keys from the FollowUp object represent systems with detailed notes
+const FOLLOW_UP_SYSTEMS: (keyof FollowUp)[] = [
+    'cns', 'cv', 'respiratory', 'fluidKidney', 'giLiver',
+    'hematology', 'infectious', 'skin', 'catheters', 'procedures'
 ];
 
-const FollowUpCard = ({ followUp, onGenerateSummary, isAiLoading }: FollowUpCardProps) => {
-  const systemsToDisplay = DISPLAYABLE_SYSTEMS.filter(
-    key => followUp[key] && typeof followUp[key] === 'object'
-  );
+const FollowUpCard = ({ followUp, onClick }: FollowUpCardProps) => {
+  // Create a brief summary for the card view by listing which systems have notes
+  const summaryPoints = FOLLOW_UP_SYSTEMS
+    .filter(key => followUp[key] && String(Object.values(followUp[key] as object)).trim() !== '')
+    .map(key => key.toString().charAt(0).toUpperCase() + key.toString().slice(1).replace(/([A-Z])/g, ' $1'));
 
   return (
-    <div className="follow-up-card">
-      <h4>{followUp.id}</h4>
-
-      {systemsToDisplay.map(systemKey => (
-        <div key={systemKey} className="system-summary">
-          <strong>{systemKey.toUpperCase()}</strong>
-          <ul>
-            {Object.entries(followUp[systemKey as keyof FollowUp] as object).map(([prop, value]) => (
-              <li key={prop}>{prop}: {String(value)}</li>
-            ))}
-          </ul>
-        </div>
-      ))}
+    // The entire div is now a clickable element
+    <div className="follow-up-card" onClick={onClick}>
+      <h4>Follow-up from: {followUp.id}</h4>
       
+      <p><strong>Updated Systems:</strong> {summaryPoints.length > 0 ? summaryPoints.join(', ') : 'Notes only'}</p>
+
+      {/* Show a snippet of the general notes if they exist */}
       {followUp.notes && (
-        <div className="system-summary">
-            <strong>Notes</strong>
-            <p>{followUp.notes}</p>
-        </div>
+        <p><strong>Notes:</strong> {followUp.notes.substring(0, 70)}...</p>
       )}
 
-      {followUp.aiSummary ? (
+      {followUp.aiSummary && (
         <div className="ai-summary">
           <strong>AI Summary</strong>
           <p>{followUp.aiSummary}</p>
         </div>
-      ) : (
-        <button onClick={onGenerateSummary} disabled={isAiLoading}>
-          {isAiLoading ? 'Generating...' : 'Generate AI Summary'}
-        </button>
       )}
     </div>
   );

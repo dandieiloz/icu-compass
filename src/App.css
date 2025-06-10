@@ -62,6 +62,342 @@ hr {
   list-style: none;
   padding: 6px 12px;
   cursor: pointer;
+  color: #ccc;
+}
+.react-tabs__tab--selected {
+  background: #333;
+  border-color: #444;
+  color: white;
+  border-radius: 5px 5px 0 0;
+}
+
+/* Form and List Styles */
+.form-group, .task-form, .med-form, .follow-up-form {
+  margin-bottom: 15px;
+}
+input[type="text"], input[type="number"], textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  box-sizing: border-box;
+  background-color: #333;
+  border: 1px solid #555;
+  color: white;
+  border-radius: 4px;
+}
+input::placeholder, textarea::placeholder {
+  color: #8e8e8e;
+  opacity: 1; /* Firefox */
+}
+textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+button:hover {
+  background-color: #0056b3;
+}
+.delete-button {
+  background-color: #dc3545;
+}
+.delete-button:hover {
+  background-color: #c82333;
+}
+.medication-item, .task-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #444;
+}
+.task-list {
+  list-style-type: none;
+  padding: 0;
+}
+.task-list .delete-button {
+  padding: 4px 8px;
+  margin-top: 0;
+  font-size: 0.8em;
+}
+
+/* FollowUpCard Styles */
+.follow-up-card {
+  background-color: #2c2c2c;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.follow-up-card:hover {
+    border-color: #00aaff;
+}
+.follow-up-card h4 {
+  margin-top: 0;
+  color: #00aaff;
+}
+.system-summary {
+  margin-top: 10px;
+}
+.system-summary ul {
+  list-style-type: none;
+  padding-left: 15px;
+  margin: 5px 0 0 0;
+}
+.system-summary li {
+  padding: 2px 0;
+}
+.ai-summary {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #333a44;
+  border-radius: 4px;
+}
+.ai-summary p {
+  margin-top: 5px;
+  white-space: pre-wrap;
+}
+
+/* PatientHistory & DiagnosisSelector Styles */
+.patient-history {
+  background-color: #2c2c2c;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+.patient-history ul {
+  padding-left: 20px;
+  margin-top: 5px;
+}
+
+.selectors-container {
+  display: flex;
+  gap: 20px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.diagnosis-selector {
+  flex: 1;
+  border: 1px solid #444;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.diagnosis-selector .search-input {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.diagnosis-selector .selection-area {
+  max-height: 45vh;
+  overflow-y: auto;
+}
+
+.diagnosis-selector .category-group {
+  margin-bottom: 15px;
+}
+
+.diagnosis-selector .category-group h5 {
+  margin: 0 0 5px 0;
+  border-bottom: 1px solid #555;
+  padding-bottom: 5px;
+}
+
+.diagnosis-selector .checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* TaskCreator Styles */
+.task-creator .search-input {
+    width: 100%;
+    margin: 15px 0;
+}
+
+.other-task-button {
+    width: 100%;
+    background-color: #3a3a3a;
+    border-color: #555;
+}
+
+.other-task-button:hover {
+    background-color: #444;
+}
+
+.task-selection-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.task-selection-list ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.task-selection-list li {
+    padding: 10px 8px;
+    border-bottom: 1px solid #333;
+    cursor: pointer;
+}
+
+.task-selection-list li:hover {
+    background-color: #007bff;
+}
+
+.task-category-group {
+  margin-bottom: 10px;
+}
+
+.task-category-group h5 {
+  margin: 0 0 10px 0;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #444;
+  color: #00aaff;
+}
+
+
+/* FollowUpForm Styles */
+fieldset {
+  border: 1px solid #555;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+legend {
+  padding: 0 5px;
+  font-weight: bold;
+  color: #00aaff;
+}
+
+/* Custom Datalist Styles */
+.custom-datalist-container {
+  position: relative;
+  width: 100%;
+}
+
+.suggestions-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #333;
+  border: 1px solid #555;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.suggestions-list li {
+  padding: 8px 12px;
+  cursor: pointer;
+  color: white !important; /* Force color */
+}
+
+.suggestion-item:hover { 
+  background-color: #007bff;
+}
+
+.suggestion-category-header {
+  padding: 8px 12px;
+  font-weight: bold;
+  color: #00aaff; 
+  background-color: #2c2c2c;
+  border-bottom: 1px solid #555;
+  border-top: 1px solid #555;
+  margin-top: 5px;
+}
+
+.suggestion-category-header:first-child {
+  margin-top: 0;
+  border-top: none;
+}
+
+/* General App Styles */
+body {
+  background-color: #1e1e1e;
+  color: white;
+  font-family: sans-serif;
+}
+
+.App {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* WardDashboard Styles */
+.bed-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+}
+.bed-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+.bed-card {
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 15px;
+  background-color: #2c2c2c;
+  text-align: center;
+  transition: background-color 0.2s;
+}
+.bed-card:hover {
+  background-color: #3a3a3a;
+}
+.bed-card h2 {
+  margin-top: 0;
+}
+
+/* PatientDetail Styles */
+.completed span {
+  text-decoration: line-through;
+  color: grey;
+}
+hr {
+  border: none;
+  border-top: 1px solid #444;
+  margin: 20px 0;
+}
+
+/* Tab Styles */
+.react-tabs__tab-list {
+  border-bottom: 1px solid #444;
+  margin: 0 0 20px;
+  padding: 0;
+}
+.react-tabs__tab {
+  display: inline-block;
+  border: 1px solid transparent;
+  border-bottom: none;
+  bottom: -1px;
+  position: relative;
+  list-style: none;
+  padding: 6px 12px;
+  cursor: pointer;
 }
 .react-tabs__tab--selected {
   background: #333;
@@ -150,4 +486,103 @@ button:hover {
 .ai-summary p {
   margin-top: 5px;
   white-space: pre-wrap;
+}
+/* Login Page Styles */
+.login-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.login-button {
+  width: 100%;
+}
+
+.toggle-auth-button {
+  background: none;
+  border: none;
+  color: #646cff;
+  cursor: pointer;
+  padding: 10px;
+  margin-top: 15px;
+}
+
+.toggle-auth-button:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  color: #f5c6cb;
+  background-color: #721c24;
+  border: 1px solid #f5c6cb;
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+  margin-top: 15px;
+}
+
+/* Other App Styles */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logout-button {
+  background-color: #444;
+}
+
+.logout-button:hover {
+  background-color: #555;
+}
+.snapshot-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.snapshot-header h4 {
+  color: #00aaff;
+  margin: 0;
+}
+
+.copy-button {
+  background-color: #17a2b8; /* A teal/info color */
+  font-size: 0.9em;
+  padding: 6px 12px;
+}
+
+.copy-button:hover {
+  background-color: #138496;
+}
+.patient-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.discharge-button {
+  background-color: #721c24; /* A dark red color */
+  border: 1px solid #f5c6cb;
+}
+
+.discharge-button:hover {
+  background-color: #8c2a32;
+  border-color: #f5c6cb;
+}
+
+.discharge-button:disabled {
+    background-color: #5a1a21;
+    cursor: not-allowed;
 }

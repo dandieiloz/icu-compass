@@ -1,60 +1,67 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 
 admin.initializeApp();
-const firestore = admin.firestore();
+const db = admin.firestore();
 
-interface RequestData {
-  patientId: string;
-  followUpId: string;
+// Helper function to delete all documents in a subcollection
+async function deleteCollection(collectionPath: string, batchSize: number) {
+  const collectionRef = db.collection(collectionPath);
+  const query = collectionRef.orderBy('__name__').limit(batchSize);
+
+  return new Promise((resolve, reject) => {
+    deleteQueryBatch(query, resolve).catch(reject);
+  });
 }
 
-const genAI = new GoogleGenerativeAI(functions.config().gemini.key);
-const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+async function deleteQueryBatch(query: FirebaseFirestore.Query, resolve: (value: unknown) => void) {
+  const snapshot = await query.get();
 
-export const generateSummary = functions.https.onCall(async (request) => {
-  const { patientId, followUpId } = request.data as RequestData;
-
-  if (!patientId || !followUpId) {
-    throw new functions.https.HttpsError(
-      "invalid-argument",
-      "The function must be called with 'patientId' and 'followUpId' arguments."
-    );
+  const batchSize = snapshot.size;
+  if (batchSize === 0) {
+    // When there are no documents left, we are done
+    resolve(true);
+    return;
   }
 
-  try {
-    const followUpRef = firestore
-      .collection("patients")
-      .doc(patientId)
-      .collection("followups")
-      .doc(followUpId);
-      
-    const docSnap = await followUpRef.get();
+  // Delete documents in a batch
+  const batch = db.batch();
+  snapshot.docs.forEach((doc) => {
+    batch.delete(doc.ref);
+  });
+  await batch.commit();
 
-    if (!docSnap.exists) {
-      throw new functions.https.HttpsError("not-found", "Follow-up document not found.");
+  // Recurse on the next process tick, to avoid hitting stack limits
+  process.nextTick(() => {
+    deleteQueryBatch(query, resolve);
+  });
+}
+
+
+// Cloud Function to discharge a patient
+export const dischargePatient = functions.https.onCall(async (request) => {
+    const bedId = request.data.bedId;
+
+    if (!bedId || typeof bedId !== 'string') {
+        throw new functions.https.HttpsError('invalid-argument', 'The function must be called with a "bedId" argument.');
     }
 
-    const followUpData = docSnap.data();
+    const patientPath = `patients/${bedId}`;
+    
+    try {
+        // Define all subcollections to be deleted
+        const subcollections = ['tasks', 'medications', 'followups'];
 
-    const prompt = `
-        Summarize the following ICU daily follow-up notes into a concise clinical summary paragraph.
-        Focus on the key changes and active issues. Do not just list the values.
-
-        Data:
-        ${JSON.stringify(followUpData, null, 2)}
-      `;
-
-    const result = await model.generateContent(prompt);
-    const response = result.response;
-    const summary = response.text();
-
-    await followUpRef.update({ aiSummary: summary });
-
-    return { summary: summary };
-  } catch (error) {
-    console.error("Error generating summary:", error);
-    throw new functions.https.HttpsError("internal", "Failed to generate AI summary.");
-  }
+        for (const subcollection of subcollections) {
+            await deleteCollection(`${patientPath}/${subcollection}`, 50);
+        }
+        
+        // After all subcollections are empty, delete the main patient document
+        await db.doc(patientPath).delete();
+        
+        return { success: true, message: `Patient in bed ${bedId} was discharged successfully.` };
+    } catch (error) {
+        console.error(`Error discharging patient ${bedId}:`, error);
+        throw new functions.https.HttpsError('internal', 'Failed to discharge patient.');
+    }
 });
