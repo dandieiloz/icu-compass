@@ -1,0 +1,153 @@
+/* General App Styles */
+body {
+  background-color: #1e1e1e;
+  color: white;
+  font-family: sans-serif;
+}
+
+.App {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* WardDashboard Styles */
+.bed-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+}
+.bed-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+.bed-card {
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 15px;
+  background-color: #2c2c2c;
+  text-align: center;
+  transition: background-color 0.2s;
+}
+.bed-card:hover {
+  background-color: #3a3a3a;
+}
+.bed-card h2 {
+  margin-top: 0;
+}
+
+/* PatientDetail Styles */
+.completed span {
+  text-decoration: line-through;
+  color: grey;
+}
+hr {
+  border: none;
+  border-top: 1px solid #444;
+  margin: 20px 0;
+}
+
+/* Tab Styles */
+.react-tabs__tab-list {
+  border-bottom: 1px solid #444;
+  margin: 0 0 20px;
+  padding: 0;
+}
+.react-tabs__tab {
+  display: inline-block;
+  border: 1px solid transparent;
+  border-bottom: none;
+  bottom: -1px;
+  position: relative;
+  list-style: none;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.react-tabs__tab--selected {
+  background: #333;
+  border-color: #444;
+  color: white;
+  border-radius: 5px 5px 0 0;
+}
+
+/* Form and List Styles */
+.form-group, .task-form, .med-form, .follow-up-form {
+  margin-bottom: 15px;
+}
+input[type="text"], input[type="number"], textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  box-sizing: border-box;
+  background-color: #333;
+  border: 1px solid #555;
+  color: white;
+  border-radius: 4px;
+}
+textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+button:hover {
+  background-color: #0056b3;
+}
+.delete-button {
+  background-color: #dc3545;
+}
+.delete-button:hover {
+  background-color: #c82333;
+}
+.medication-item, .task-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #444;
+}
+.task-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* FollowUpCard Styles */
+.follow-up-card {
+  background-color: #2c2c2c;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+.follow-up-card h4 {
+  margin-top: 0;
+  color: #00aaff;
+}
+.system-summary {
+  margin-top: 10px;
+}
+.system-summary ul {
+  list-style-type: none;
+  padding-left: 15px;
+  margin: 5px 0 0 0;
+}
+.system-summary li {
+  padding: 2px 0;
+}
+.ai-summary {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #333a44;
+  border-radius: 4px;
+}
+.ai-summary p {
+  margin-top: 5px;
+  white-space: pre-wrap;
+}
